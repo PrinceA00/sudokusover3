@@ -46,8 +46,25 @@ public class MySudokuBoard {
 
       if (!isValid())return false;
       if (isSolved())return true;
+      for (int r=0; r<myBoard.length; r++){
+         for (int c=0; c<myBoard.length; c++){
+            if (myBoard[r][c]=='.')
+            for(char d='1'; d<='9';d++){
+                myBoard[r][c]= d;
+               if (isValid()&&solve())return true; 
                
-   
+               myBoard[r][c] = '.';
+               
+             }
+             
+             return false;
+             
+            }
+         }
+        return false;  
+       } 
+
+      
    public boolean isValid() {
       // checks for bad data
       for(char[] row : myBoard) 
