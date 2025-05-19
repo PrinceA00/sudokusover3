@@ -20,9 +20,9 @@ public class MySudokuBoard {
                myBoard[row][col] = theLine.charAt(col);
             }
          }
-      } catch(Exception e) {
+      } catch(FileNotFoundException e) {
          System.out.println("Something went wrong :(");
-         e.printStackTrace();
+         e.printStackTrace(); 
       }
    }//end of the constructor
    
@@ -43,26 +43,27 @@ public class MySudokuBoard {
       return map.keySet().size() == 9 && Collections.frequency(map.values(),9) == 9;
    }
    public boolean solve(){
-
       if (!isValid())return false;
       if (isSolved())return true;
-      for (int r=0; r<myBoard.length; r++){
-         for (int c=0; c<myBoard.length; c++){
-            if (myBoard[r][c]=='.')
-            for(char d='1'; d<='9';d++){
-                myBoard[r][c]= d;
-               if (isValid()&&solve())return true; 
-               
-               myBoard[r][c] = '.';
-               
-             }
-             
-             return false;
-             
+      
+      solveHelper('0', '0');
+      return solve();  
+   }
+       
+   private void solveHelper(char r, char c){
+      if (myBoard[r][c] == '.') {
+         for(char d='1'; d<='9';d++){
+            myBoard[r][c] = d;
+            if (isValid()&&!isSolved()) {
+               if (c < '9') {
+                  solveHelper(r, c++);
+               } else {
+                  solveHelper(r++, c);
+               }
             }
-         }
-        return false;  
-       } 
+          }
+      }
+   }
 
       
    public boolean isValid() {
